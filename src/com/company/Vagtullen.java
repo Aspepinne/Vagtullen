@@ -14,7 +14,7 @@ public class Vagtullen {
         try {
             Scanner sc = new Scanner(new File(inputFile));
             String[] dateStrings = sc.nextLine().split(", ");
-            LocalDateTime[] dates = new LocalDateTime[dateStrings.length-1];
+            LocalDateTime[] dates = new LocalDateTime[dateStrings.length-1]; // hoppar över sista datumet
             for(int i = 0; i < dates.length; i++) {
                 dates[i] = LocalDateTime.parse(dateStrings[i], DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
             }
@@ -37,14 +37,14 @@ public class Vagtullen {
                 totalFee += Math.max(getTollFeePerPassing(date), getTollFeePerPassing(intervalStart));
             }
         }
-        return Math.max(totalFee, 60);
+        return Math.max(totalFee, 60); // kommer alltid bli 60
     }
 
     private int getTollFeePerPassing(LocalDateTime date) {
         if (isTollFreeDate(date)) return 0;
         int hour = date.getHour();
         int minute = date.getMinute();
-        if (hour == 6 && minute >= 0 && minute <= 29) return 8;
+        if (hour == 6 && minute >= 0 && minute <= 29) return 8;        // gulmarkerade är onödiga (kommer alltid vara sant)
         else if (hour == 6 && minute >= 30 && minute <= 59) return 13;
         else if (hour == 7 && minute >= 0 && minute <= 59) return 18;
         else if (hour == 8 && minute >= 0 && minute <= 29) return 13;
