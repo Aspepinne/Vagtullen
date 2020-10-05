@@ -61,10 +61,39 @@ public class VagtullenTest {
 //        18:30–05:59 0 kr
 
     }
+
     @Test
-    void getTotalFeeCost(){
+    void TestDateLength() {
+        Vagtullen vagtull = new Vagtullen("testData/Lab4.txt");
+        assertEquals(vagtull.dateTest.length, vagtull.dateStringTest.length);
+    }
 
+    @Test
+    void getMinuteDiff() {
+        LocalDateTime[] dates = new LocalDateTime[6];
+        dates[0] = LocalDateTime.parse("2020-06-29 07:28", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        dates[1] = LocalDateTime.parse("2020-06-29 08:19", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        dates[2] = LocalDateTime.parse("2020-06-29 14:45", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        dates[3] = LocalDateTime.parse("2020-06-29 15:26", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        dates[4] = LocalDateTime.parse("2020-06-29 16:40", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        dates[5] = LocalDateTime.parse("2020-06-29 17:06", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        assertEquals(54, Vagtullen.getTotalFeeCost(dates));
+    }
 
+    @Test
+    void getTotalFeeCost() {
+        LocalDateTime[] dates = new LocalDateTime[10];
+        dates[0] = LocalDateTime.parse("2020-06-30 00:05", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        dates[1] = LocalDateTime.parse("2020-06-30 06:34", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        dates[2] = LocalDateTime.parse("2020-06-30 08:52", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        dates[3] = LocalDateTime.parse("2020-06-30 10:13", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        dates[4] = LocalDateTime.parse("2020-06-30 10:25", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        dates[5] = LocalDateTime.parse("2020-06-30 11:04", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        dates[6] = LocalDateTime.parse("2020-06-30 16:50", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        dates[7] = LocalDateTime.parse("2020-06-30 18:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        dates[8] = LocalDateTime.parse("2020-06-30 21:30", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        dates[9] = LocalDateTime.parse("2020-07-01 00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        assertEquals(Math.min(Vagtullen.getTotalFeeCost(dates), 60), Vagtullen.getTotalFeeCost(dates));
     }
 
 }

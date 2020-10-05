@@ -1,6 +1,5 @@
 package com.company;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -10,15 +9,20 @@ import java.util.Scanner;
 
 public class Vagtullen {
 
+    public String[] dateStringTest;
+    public LocalDateTime[] dateTest;
+
     public Vagtullen(String inputFile) {
         try {
             Scanner sc = new Scanner(new File(inputFile));
             String[] dateStrings = sc.nextLine().split(", ");
-            LocalDateTime[] dates = new LocalDateTime[dateStrings.length-1]; // hoppar över sista datumet
+            LocalDateTime[] dates = new LocalDateTime[dateStrings.length];
+            dateStringTest = dateStrings;
+            dateTest = dates;
             for(int i = 0; i < dates.length; i++) {
                 dates[i] = LocalDateTime.parse(dateStrings[i], DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
             }
-            System.out.println("The total fee for the inputfile is" + getTotalFeeCost(dates));
+            System.out.println("The total fee for the inputfile is " + getTotalFeeCost(dates));
         } catch(IOException e) {
             System.err.println("Could not read file " + inputFile);
         }
@@ -26,18 +30,21 @@ public class Vagtullen {
 
     public static int getTotalFeeCost(LocalDateTime[] dates) {
         int totalFee = 0;
+        int feePrice = 0;
+        int tempFee = 0;
         LocalDateTime intervalStart = dates[0];
         for(LocalDateTime date: dates) {
             System.out.println(date.toString());
             long diffInMinutes = intervalStart.until(date, ChronoUnit.MINUTES);
-            if(diffInMinutes > 60) {
-                totalFee += getTollFeePerPassing(date);
+            if (diffInMinutes >= 60 || diffInMinutes == 0) {
+                feePrice = getTollFeePerPassing(date);
+                totalFee += feePrice;
                 intervalStart = date;
             } else {
-                totalFee += Math.max(getTollFeePerPassing(date), getTollFeePerPassing(intervalStart));
+                tempFee = Math.max(feePrice, tempFee);
             }
         }
-        return Math.max(totalFee, 60); // kommer alltid bli 60
+        return Math.min(totalFee + tempFee, 60);
     }
 
     public static int getTollFeePerPassing(LocalDateTime date) {
@@ -56,7 +63,6 @@ public class Vagtullen {
         else return 0;
     }
 
-    // kolla om man behöver betala i VagtullenTest med assertTrue
     public static boolean isTollFreeDate(LocalDateTime date) {
         return date.getDayOfWeek().getValue() == 6 || date.getDayOfWeek().getValue() == 7 || date.getMonth().getValue() == 7;
     }
