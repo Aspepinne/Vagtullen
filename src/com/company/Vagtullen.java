@@ -44,7 +44,7 @@ public class Vagtullen {
                 tempFee = Math.max(passageFee, tempFee);
             }
         }
-        return Math.min(totalFee + tempFee, 60);
+        return Math.min(totalFee, 60);
     }
 
     public static int getTollFeePerPassing(LocalDateTime date) {
