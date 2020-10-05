@@ -30,18 +30,18 @@ public class Vagtullen {
 
     public static int getTotalFeeCost(LocalDateTime[] dates) {
         int totalFee = 0;
-        int feePrice = 0;
+        int passageFee = 0;
         int tempFee = 0;
         LocalDateTime intervalStart = dates[0];
         for(LocalDateTime date: dates) {
             System.out.println(date.toString());
             long diffInMinutes = intervalStart.until(date, ChronoUnit.MINUTES);
-            if (diffInMinutes >= 60 || diffInMinutes == 0) {
-                feePrice = getTollFeePerPassing(date);
-                totalFee += feePrice;
+            if (diffInMinutes >= 60) {
+                passageFee = getTollFeePerPassing(date);
+                totalFee += passageFee;
                 intervalStart = date;
             } else {
-                tempFee = Math.max(feePrice, tempFee);
+                tempFee = Math.max(passageFee, tempFee);
             }
         }
         return Math.min(totalFee + tempFee, 60);
