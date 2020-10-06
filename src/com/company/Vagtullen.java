@@ -51,11 +51,10 @@ public class Vagtullen {
         int passageFee;
         int tempFee = 0;
         int previousFee;
-        long diffInMinutes;
         LocalDateTime intervalStart = dates[0];
         for (LocalDateTime date : dates) {
             System.out.println(date.toString());
-            diffInMinutes = intervalStart.until(date, ChronoUnit.MINUTES);
+            long diffInMinutes = intervalStart.until(date, ChronoUnit.MINUTES);
             if (diffInMinutes <= 60) {
                 previousFee = getTollFeePerPassing(intervalStart);
                 passageFee = getTollFeePerPassing(date);
