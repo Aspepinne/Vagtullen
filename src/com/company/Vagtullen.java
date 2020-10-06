@@ -4,18 +4,36 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Vagtullen {
 
     public String[] dateStringTest;
     public LocalDateTime[] dateTest;
+    public String message;
 
     public Vagtullen(String inputFile) {
         try {
+            readInputFile(inputFile);
+        }catch (DateTimeParseException e){
+            message = "Invalid Format";
+            System.err.println(message);
+        }catch (NoSuchElementException e){
+            message = "Empty Line";
+            System.err.println(message);
+        }
+
+    }
+
+    public void readInputFile(String inputFile){
+
+        try {
             Scanner sc = new Scanner(new File(inputFile));
             String[] dateStrings = sc.nextLine().split(", ");
+            sc.close();
             LocalDateTime[] dates = new LocalDateTime[dateStrings.length];
             dateStringTest = dateStrings;
             dateTest = dates;

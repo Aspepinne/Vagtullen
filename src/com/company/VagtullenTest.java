@@ -1,6 +1,8 @@
 package com.company;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import com.sun.tools.javac.Main;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -94,6 +96,13 @@ public class VagtullenTest {
         dates[8] = LocalDateTime.parse("2020-06-30 21:30", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         dates[9] = LocalDateTime.parse("2020-07-01 00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         assertEquals(Math.min(Vagtullen.getTotalFeeCost(dates), 60), Vagtullen.getTotalFeeCost(dates));
+    }
+    @Test
+    void testException(){
+        String expectedOutput = "Invalid Format";
+        assertEquals(expectedOutput, new Vagtullen("testData/TestFile1.txt").message);
+        expectedOutput = "Empty Line";
+        assertEquals(expectedOutput, new Vagtullen("testData/TestFile2.txt").message);
     }
 
 }
