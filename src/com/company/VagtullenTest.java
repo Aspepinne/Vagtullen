@@ -78,7 +78,7 @@ public class VagtullenTest {
         dates[3] = LocalDateTime.parse("2020-06-29 15:26", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         dates[4] = LocalDateTime.parse("2020-06-29 16:40", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         dates[5] = LocalDateTime.parse("2020-06-29 17:06", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-        assertEquals(36, Vagtullen.getTotalFeeCost(dates));
+        assertEquals(46, Vagtullen.getTotalFeeCost(dates));
     }
 
     @Test
