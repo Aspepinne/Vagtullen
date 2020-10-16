@@ -61,11 +61,13 @@ public class Vagtullen {
                 tempFee = Math.max(getTollFeePerPassing(date), tempFee);
                 if (totalFee < tempFee){
                     totalFee = tempFee;
-                }else if (passageFee < previousFee){
+                }
+                else if (passageFee < previousFee){
                     totalFee += previousFee;
                     totalFee -= passageFee;
                 }
-            } else {
+            }
+            else {
                 if (tempFee > getTollFeePerPassing(date)){
                     tempFee = Math.min(getTollFeePerPassing(date), tempFee);
                 }
@@ -74,6 +76,7 @@ public class Vagtullen {
                 tempFee = getTollFeePerPassing(intervalStart);
             }
         }
+        System.out.println(Math.min(totalFee, 60));
         return Math.min(totalFee, 60);
     }
 

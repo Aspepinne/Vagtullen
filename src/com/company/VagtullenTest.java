@@ -2,6 +2,7 @@ package com.company;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -9,14 +10,28 @@ import java.time.format.DateTimeFormatter;
 
 public class VagtullenTest {
 
+    @DisplayName("Test if toll is not free during workdays")
     @Test
-    void isTollFreeDate(){
-        LocalDateTime date = LocalDateTime.parse("2020-06-30 00:05", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+    void isTollFreeDateWorkday(){
+        LocalDateTime date = LocalDateTime.parse("2020-06-30 11:05", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         assertFalse(Vagtullen.isTollFreeDate(date));
+    }
 
-        date = LocalDateTime.parse("2020-07-01 00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+    @DisplayName("Test if toll is free during weekends")
+    @Test
+    void isTollFreeDateWeekend(){
+        LocalDateTime date = LocalDateTime.parse("2020-06-28 14:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         assertTrue(Vagtullen.isTollFreeDate(date));
     }
+
+    @DisplayName("Test if toll is free in July")
+    @Test
+    void isTollFreeDateJuly(){
+        LocalDateTime date = LocalDateTime.parse("2020-07-01 00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        assertTrue(Vagtullen.isTollFreeDate(date));
+    }
+
+    @DisplayName("Test if each fee is right")
     @Test
     void getTollFeePerPassing(){
 
@@ -63,12 +78,14 @@ public class VagtullenTest {
 
     }
 
+    @DisplayName("Test array length")
     @Test
     void TestDateLength() {
         Vagtullen vagtull = new Vagtullen("testData/Lab4.txt");
         assertEquals(vagtull.dateTest.length, vagtull.dateStringTest.length);
     }
 
+    @DisplayName("Test if only the most expensive passage fee is paid within the hour")
     @Test
     void getMinuteDiff() {
         LocalDateTime[] dates = new LocalDateTime[6];
@@ -81,6 +98,7 @@ public class VagtullenTest {
         assertEquals(46, Vagtullen.getTotalFeeCost(dates));
     }
 
+    @DisplayName("Test if the returned totalFee is right")
     @Test
     void getTotalFeeCost() {
         LocalDateTime[] dates = new LocalDateTime[10];
@@ -96,11 +114,18 @@ public class VagtullenTest {
         dates[9] = LocalDateTime.parse("2020-07-01 00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         assertEquals(Math.min(Vagtullen.getTotalFeeCost(dates), 60), Vagtullen.getTotalFeeCost(dates));
     }
+
+    @DisplayName("Test if date in file has invalid formatting")
     @Test
-    void testException(){
+    void testDateTimeParseException(){
         String expectedOutput = "Invalid Format";
         assertEquals(expectedOutput, new Vagtullen("testData/TestFile1.txt").message);
-        expectedOutput = "Empty Line";
+    }
+
+    @DisplayName("Test if file is empty")
+    @Test
+    void testNoSuchElementException(){
+        String expectedOutput = "Empty Line";
         assertEquals(expectedOutput, new Vagtullen("testData/TestFile2.txt").message);
     }
 
